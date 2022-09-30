@@ -1,0 +1,5 @@
+@media screen and (max-width: 430px) {
+  .profile__add-file {
+    max-width: 16px;
+  }
+}

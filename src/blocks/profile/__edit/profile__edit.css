@@ -1,0 +1,25 @@
+.profile__edit {
+  background-color: #000;
+  box-sizing: border-box;
+  border: 1px solid #fff;
+  max-width: 24px;
+  min-height: 24px;
+  align-self: end;
+  transition: all .5s ease;
+  cursor: pointer;
+}
+
+.profile__edit:hover {
+  opacity: .6;
+}
+
+@media screen and (max-width: 430px) {
+  .profile__edit {
+    max-width: 18px;
+    min-height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+  }
+}

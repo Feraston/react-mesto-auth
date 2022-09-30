@@ -1,0 +1,10 @@
+.popup__error_active {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media screen and (max-width: 450px) {
+  .popup__error_active {
+    max-width: 238px;
+  }
+}

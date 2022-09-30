@@ -1,0 +1,9 @@
+.popup__form-button_inactive {
+  background: none;
+  opacity: .2;
+  outline: 1px solid #000;
+  cursor: default;
+  pointer-events: none;
+  color: #000;
+
+}

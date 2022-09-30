@@ -1,0 +1,10 @@
+.content__button-like {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: all .5s ease;
+}
+
+.content__button-like:hover {
+  opacity: .5;
+}

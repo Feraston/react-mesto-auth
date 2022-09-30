@@ -1,0 +1,32 @@
+.profile__content-edit {
+  border: none;
+  outline: none;
+  width: 125px;
+  height: 125px;
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  overflow: hidden;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: .6s;
+  background: rgba(0, 0, 0, 0);
+}
+
+.profile__content-edit:hover {
+  background: rgba(0, 0, 0, 0.8);
+  background-image: url(../../../images/avtEdit.svg);
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+
+.profile__content-edit:hover:active {
+  transform: scale(1.2);
+}
+
+@media screen and (max-width: 680px) {
+  .profile__content-edit {
+    left: auto;
+  }
+}

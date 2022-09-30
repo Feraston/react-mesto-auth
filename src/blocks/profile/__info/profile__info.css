@@ -1,0 +1,22 @@
+.profile__info {
+  max-width: 336px;
+  display: grid;
+  grid: auto/294px 1fr;
+  row-gap: 16px;
+  column-gap: 18px;
+}
+
+@media screen and (max-width: 680px) {
+  .profile__info {
+    max-width: 680px;
+    grid: auto/minmax(310px, 640px) 1fr;
+    row-gap: 14px;
+    column-gap: 10px;
+  }
+  @media screen and (max-width: 430px) {
+    .profile__info {
+      min-width: 282px;
+      grid: auto/235px 1fr;
+    }
+  }
+}

@@ -1,0 +1,4 @@
+.content__contain {
+  display: flex;
+  flex-direction: column;
+}
