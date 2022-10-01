@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -13,6 +13,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
+import * as authApi from "../utils/authApi";
 
 function App() {
   // Api data
@@ -26,7 +27,8 @@ function App() {
   const [isLoading, setLoading] = useState(false);
   const [cardDelete, setCardDelete] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
-
+  const [userData, setUserData] = useState('');
+  const history = useHistory();
 
   //  Request processing functions
   function handleUpdateUser(userData) {
@@ -135,17 +137,24 @@ function App() {
   }
 
   function handleRegister(email, password) {
-// Позже написать
+// Позже написать authApi InfoTooltip
   }
 
   function handleLogin(email, password) {
-// Позже написать
+// Позже написать authApi InfoTooltip
+  }
+
+  function signOut() {
+    setLoggedIn(false);
+    setUserData('');
+    localStorage.removeItem('token');
+    history.push('/sign-in');
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header headerMail={userData} signOut={signOut}/>
         <Switch>
             <ProtectedRoute
               exact 
