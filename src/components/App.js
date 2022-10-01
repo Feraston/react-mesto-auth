@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -9,6 +10,9 @@ import PopupDeleteCards from "./PopupDeleteCards";
 import ImagePopup from "./ImagePopup";
 import { api } from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import Login from "./Login";
+import Register from "./Register";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   // Api data
@@ -21,6 +25,8 @@ function App() {
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [cardDelete, setCardDelete] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
+
 
   //  Request processing functions
   function handleUpdateUser(userData) {
@@ -128,20 +134,43 @@ function App() {
     setSelectedCard({ isOpen: false });
   }
 
+  function handleRegister(email, password) {
+// Позже написать
+  }
+
+  function handleLogin(email, password) {
+// Позже написать
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
-        <Main
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          apiCards={apiCards}
-          selectedCards={handleCardClick}
-          cardDelete={handleDeleteCardClick}
-          onCardLike={handleCardLike}
-        />
-        <Footer />
+        <Switch>
+            <ProtectedRoute
+              exact 
+              path="/"
+              loggedIn={loggedIn}
+              component={Main}
+              onEditAvatar={handleEditAvatarClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              apiCards={apiCards}
+              selectedCards={handleCardClick}
+              cardDelete={handleDeleteCardClick}
+              onCardLike={handleCardLike}
+            />
+            <Route path="/sign-up">
+              <Register handleRegister={handleRegister} />
+            </Route>
+            <Route path="/sign-in">
+              <Login handleLogin={handleLogin} />
+            </Route>
+            <Route path="/">
+              {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+            </Route>
+          </Switch>
+          {loggedIn && <Footer/>}
         <PopupEditProfile
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
