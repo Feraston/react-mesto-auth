@@ -15,14 +15,14 @@ function Header({ headerMail, signOut }) {
         </div>
       </Route>
       <Route path="/sign-in">
-          <Link to="/sign-up" className="header__sign">
-            Регистрация
-          </Link>
+        <Link to="/sign-up" className="header__sign">
+          Регистрация
+        </Link>
       </Route>
       <Route path="/sign-up">
-          <Link to="/sign-in" className="header__sign">
-            Войти
-          </Link>
+        <Link to="/sign-in" className="header__sign">
+          Войти
+        </Link>
       </Route>
     </header>
   );

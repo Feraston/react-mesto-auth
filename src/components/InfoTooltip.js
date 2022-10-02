@@ -3,13 +3,9 @@ import Close from "../images/Close.svg";
 
 function InfoTooltip({ isOpen, onClose, title, icon }) {
   return (
-    <div className={`popup popup_tool ${isOpen && "popup_open"}`} >
+    <div className={`popup popup_tool ${isOpen && "popup_open"}`}>
       <div className="popup__container">
-      <button
-          className="popup__button-close"
-          type="button"
-          onClick={onClose}
-        >
+        <button className="popup__button-close" type="button" onClick={onClose}>
           <img src={Close} alt="Закрыть" className="popup__close" />
         </button>
         <img src={icon} alt="Статус-лого" className="popup__tool-logo" />

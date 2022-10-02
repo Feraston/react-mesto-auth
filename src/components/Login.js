@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 function Login({ handleLogin }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   function handleChange(evt) {
     if (evt.target.name === "Email") {
@@ -13,8 +13,8 @@ function Login({ handleLogin }) {
   }
 
   function resetForm() {
-    setEmail('');
-    setPassword('');
+    setEmail("");
+    setPassword("");
   }
 
   function handleSubmit(evt) {
@@ -33,10 +33,34 @@ function Login({ handleLogin }) {
   return (
     <section className="sign">
       <h2 className="sign__title">Вход</h2>
-      <form className="sign__form" action="#" name="sign-form" onSubmit={handleSubmit} noValidate>
-        <input required type="email" className="sign__input" placeholder="Email" name="Email" onChange={handleChange} value={email}></input>
-        <input required type="password" className="sign__input" placeholder="Пароль" name="Password" onChange={handleChange} value={password}></input>
-        <button type="submit" className="sign__button">Войти</button>
+      <form
+        className="sign__form"
+        action="#"
+        name="sign-form"
+        onSubmit={handleSubmit}
+        noValidate
+      >
+        <input
+          required
+          type="email"
+          className="sign__input"
+          placeholder="Email"
+          name="Email"
+          onChange={handleChange}
+          value={email}
+        ></input>
+        <input
+          required
+          type="password"
+          className="sign__input"
+          placeholder="Пароль"
+          name="Password"
+          onChange={handleChange}
+          value={password}
+        ></input>
+        <button type="submit" className="sign__button">
+          Войти
+        </button>
       </form>
     </section>
   );

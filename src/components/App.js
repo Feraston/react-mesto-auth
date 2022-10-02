@@ -34,8 +34,8 @@ function App() {
   const history = useHistory();
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [dataInfoTool, setDataInfoTool] = useState({
-    title: '',
-    icon: '',
+    title: "",
+    icon: "",
   });
 
   //  Request processing functions
@@ -108,13 +108,16 @@ function App() {
             setUserData(res.data.email);
             history.push("/");
           } else {
-            setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: error });
+            setDataInfoTool({
+              title: "Что-то пошло не так! Попробуйте ещё раз.",
+              icon: error,
+            });
             handleInfoTooltipOpen();
           }
         })
         .catch((err) => console.log(err));
     }
-  } 
+  }
 
   checkToken();
   // Initial launch
@@ -179,7 +182,10 @@ function App() {
       })
       .catch((err) => {
         console.error(err);
-        setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: error });
+        setDataInfoTool({
+          title: "Что-то пошло не так! Попробуйте ещё раз.",
+          icon: error,
+        });
         handleInfoTooltipOpen();
       });
   }
@@ -194,7 +200,10 @@ function App() {
             setUserData(res.data.email);
           })
           .catch((err) => {
-            setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: ok });
+            setDataInfoTool({
+              title: "Что-то пошло не так! Попробуйте ещё раз.",
+              icon: ok,
+            });
             console.error(err);
             handleInfoTooltipOpen();
           });
@@ -204,7 +213,10 @@ function App() {
         history.push("/");
       })
       .catch((err) => {
-        setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: error });
+        setDataInfoTool({
+          title: "Что-то пошло не так! Попробуйте ещё раз.",
+          icon: error,
+        });
         console.error(err);
         handleInfoTooltipOpen();
       });
@@ -212,40 +224,40 @@ function App() {
 
   function signOut() {
     setLoggedIn(false);
-    setUserData('');
-    localStorage.removeItem('token');
-    history.push('/sign-in');
+    setUserData("");
+    localStorage.removeItem("token");
+    history.push("/sign-in");
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header headerMail={userData} signOut={signOut}/>
+        <Header headerMail={userData} signOut={signOut} />
         <Switch>
-            <ProtectedRoute
-              exact 
-              path="/"
-              loggedIn={loggedIn}
-              component={Main}
-              onEditAvatar={handleEditAvatarClick}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              apiCards={apiCards}
-              selectedCards={handleCardClick}
-              cardDelete={handleDeleteCardClick}
-              onCardLike={handleCardLike}
-            />
-            <Route path="/sign-up">
-              <Register handleRegister={handleRegister} />
-            </Route>
-            <Route path="/sign-in">
-              <Login handleLogin={handleLogin} />
-            </Route>
-            <Route path="/">
-              {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
-            </Route>
-          </Switch>
-          {loggedIn && <Footer/>}
+          <ProtectedRoute
+            exact
+            path="/"
+            loggedIn={loggedIn}
+            component={Main}
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            apiCards={apiCards}
+            selectedCards={handleCardClick}
+            cardDelete={handleDeleteCardClick}
+            onCardLike={handleCardLike}
+          />
+          <Route path="/sign-up">
+            <Register handleRegister={handleRegister} />
+          </Route>
+          <Route path="/sign-in">
+            <Login handleLogin={handleLogin} />
+          </Route>
+          <Route path="/">
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+          </Route>
+        </Switch>
+        {loggedIn && <Footer />}
         <PopupEditProfile
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
