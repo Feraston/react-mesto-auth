@@ -172,7 +172,7 @@ function App() {
   function handleRegister(email, password) {
     authApi
       .register(email, password)
-      .then((data) => {
+      .then(() => {
         history.push("/sign-in");
         setDataInfoTool({ title: "Вы успешно зарегистрировались!", icon: ok });
         handleInfoTooltipOpen();
