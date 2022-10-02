@@ -1,6 +1,6 @@
 const url = "https://auth.nomoreparties.co";
 
-/////////////////////////////////////////////////////////////////////
+
 export const register = (email, password) =>
   fetch(`${url}/signup`, {
     method: "POST",
@@ -10,8 +10,6 @@ export const register = (email, password) =>
     },
     body: JSON.stringify({ email, password }),
   }).then((res) => check(res));
-
-/////////////////////////////////////////////////////////////////////
 
 export const authorize = (email, password) =>
   fetch(`${url}/signin`, {
@@ -23,7 +21,6 @@ export const authorize = (email, password) =>
     body: JSON.stringify({ email, password }),
   }).then((res) => check(res));
 
-/////////////////////////////////////////////////////////////////////
 
 export const getContent = (token) =>
   fetch(`${url}/users/me`, {

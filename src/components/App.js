@@ -14,6 +14,9 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import * as authApi from "../utils/authApi";
+import InfoTooltip from "./InfoTooltip";
+import ok from "../images/ok.png";
+import error from "../images/error.png";
 
 function App() {
   // Api data
@@ -27,8 +30,13 @@ function App() {
   const [isLoading, setLoading] = useState(false);
   const [cardDelete, setCardDelete] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState('');
+  const [userData, setUserData] = useState("");
   const history = useHistory();
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [dataInfoTool, setDataInfoTool] = useState({
+    title: '',
+    icon: '',
+  });
 
   //  Request processing functions
   function handleUpdateUser(userData) {
@@ -89,6 +97,26 @@ function App() {
       .finally(() => setLoading(false));
   }
 
+  function checkToken() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      authApi
+        .getContent(token)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            setUserData(res.data.email);
+            history.push("/");
+          } else {
+            setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: error });
+            handleInfoTooltipOpen();
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  } 
+
+  checkToken();
   // Initial launch
   useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -127,6 +155,10 @@ function App() {
     });
   }
 
+  function handleInfoTooltipOpen() {
+    setIsInfoTooltipOpen(true);
+  }
+
   // Popup close
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
@@ -134,14 +166,48 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsDeleteCardPopupOpen(false);
     setSelectedCard({ isOpen: false });
+    setIsInfoTooltipOpen(false);
   }
 
   function handleRegister(email, password) {
-// Позже написать authApi InfoTooltip
+    authApi
+      .register(email, password)
+      .then((data) => {
+        history.push("/sign-in");
+        setDataInfoTool({ title: "Вы успешно зарегистрировались!", icon: ok });
+        handleInfoTooltipOpen();
+      })
+      .catch((err) => {
+        console.error(err);
+        setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: error });
+        handleInfoTooltipOpen();
+      });
   }
 
   function handleLogin(email, password) {
-// Позже написать authApi InfoTooltip
+    authApi
+      .authorize(email, password)
+      .then((data) => {
+        authApi
+          .getContent(data.token)
+          .then((res) => {
+            setUserData(res.data.email);
+          })
+          .catch((err) => {
+            setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: ok });
+            console.error(err);
+            handleInfoTooltipOpen();
+          });
+
+        localStorage.setItem("token", data.token);
+        setLoggedIn(true);
+        history.push("/");
+      })
+      .catch((err) => {
+        setDataInfoTool({ title: "Что-то пошло не так! Попробуйте ещё раз.", icon: error });
+        console.error(err);
+        handleInfoTooltipOpen();
+      });
   }
 
   function signOut() {
@@ -209,6 +275,12 @@ function App() {
           card={selectedCard}
           isOpen={selectedCard.isOpen}
           onClose={closeAllPopups}
+        />
+        <InfoTooltip
+          isOpen={isInfoTooltipOpen}
+          onClose={closeAllPopups}
+          title={dataInfoTool.title}
+          icon={dataInfoTool.icon}
         />
       </div>
     </CurrentUserContext.Provider>
