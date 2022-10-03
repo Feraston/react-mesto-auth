@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Register({ handleRegister }) {
@@ -29,8 +29,12 @@ function Register({ handleRegister }) {
       return;
     }
     handleRegister(email, password);
-    resetForm();
   }
+
+  useEffect(() => {
+    resetForm();
+  }, []);
+
   return (
     <section className="sign">
       <h2 className="sign__title">Регистрация</h2>

@@ -20,7 +20,7 @@ export const authorize = (email, password) =>
     body: JSON.stringify({ email, password }),
   }).then((res) => check(res));
 
-export const getContent = (token) =>
+export const checkToken = (token) =>
   fetch(`${url}/users/me`, {
     method: "GET",
     headers: {

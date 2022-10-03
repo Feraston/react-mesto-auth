@@ -1,5 +1,5 @@
 import React from "react";
-import Close from "../images/Close.svg";
+import Close from "../images/close.svg";
 
 function ImagePopup(props) {
   return (
@@ -7,6 +7,7 @@ function ImagePopup(props) {
       className={`popup popup_img ${props.isOpen && "popup_open"}`}
       aria-label="Просмотр фотографии"
       id="img-zoom"
+      onClick={props.popupClose}
     >
       <div className="popup__img-zoom">
         <button

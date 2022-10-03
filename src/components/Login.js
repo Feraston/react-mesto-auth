@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Login({ handleLogin }) {
   const [email, setEmail] = useState("");
@@ -28,8 +28,12 @@ function Login({ handleLogin }) {
       return;
     }
     handleLogin(email, password);
-    resetForm();
   }
+
+  useEffect(() => {
+    resetForm();
+  }, []);
+
   return (
     <section className="sign">
       <h2 className="sign__title">Вход</h2>

@@ -1,7 +1,14 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function PopupDeleteCards({ card, isOpen, onClose, onCardDelete, isLoading }) {
+function PopupDeleteCards({
+  card,
+  isOpen,
+  onClose,
+  onCardDelete,
+  isLoading,
+  popupClose,
+}) {
   const buttonSave = isLoading ? "Удаление..." : "Да";
 
   const handleSubmit = (e) => {
@@ -20,6 +27,7 @@ function PopupDeleteCards({ card, isOpen, onClose, onCardDelete, isLoading }) {
       title={"Вы уверены?"}
       buttonTitle={buttonSave}
       onSubmit={handleSubmit}
+      popupClose={popupClose}
     />
   );
 }

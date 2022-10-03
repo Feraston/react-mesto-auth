@@ -1,9 +1,9 @@
 import React from "react";
-import Close from "../images/Close.svg";
+import Close from "../images/close.svg";
 
-function InfoTooltip({ isOpen, onClose, title, icon }) {
+function InfoTooltip({ isOpen, onClose, title, icon, popupClose }) {
   return (
-    <div className={`popup popup_tool ${isOpen && "popup_open"}`}>
+    <div className={`popup popup_tool ${isOpen && "popup_open"}`} onClick={popupClose}>
       <div className="popup__container">
         <button className="popup__button-close" type="button" onClick={onClose}>
           <img src={Close} alt="Закрыть" className="popup__close" />

@@ -15,7 +15,7 @@ function Main(props) {
             className="profile__content-edit"
             type="button"
             onClick={props.onEditAvatar}
-          ></button>
+          />
           <img
             src={currentUser.avatar}
             alt="Аватар"

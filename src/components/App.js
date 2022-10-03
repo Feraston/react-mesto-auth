@@ -37,6 +37,11 @@ function App() {
     title: "",
     icon: "",
   });
+  const isOpen =
+    isEditAvatarPopupOpen ||
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    selectedCard.isOpen;
 
   //  Request processing functions
   function handleUpdateUser(userData) {
@@ -66,11 +71,16 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setApiCards((state) =>
-        state.map((c) => (c._id === card._id ? newCard : c))
-      );
-    });
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setApiCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
   }
 
   function handleCardDelete(card) {
@@ -101,7 +111,7 @@ function App() {
     const token = localStorage.getItem("token");
     if (token) {
       authApi
-        .getContent(token)
+        .checkToken(token)
         .then((res) => {
           if (res) {
             setLoggedIn(true);
@@ -112,16 +122,15 @@ function App() {
               title: "Что-то пошло не так! Попробуйте ещё раз.",
               icon: error,
             });
-            handleInfoTooltipOpen();
           }
         })
         .catch((err) => console.log(err));
     }
   }
 
-  checkToken();
   // Initial launch
   useEffect(() => {
+    checkToken();
     Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([users, card]) => {
         setCurrentUser(users);
@@ -131,6 +140,20 @@ function App() {
         console.log(`Ошибка: ${err}`);
       });
   }, []);
+
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener("keydown", closeByEscape);
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+  }, [isOpen]);
 
   // Popup open
   function handleEditAvatarClick() {
@@ -178,7 +201,6 @@ function App() {
       .then(() => {
         history.push("/sign-in");
         setDataInfoTool({ title: "Вы успешно зарегистрировались!", icon: ok });
-        handleInfoTooltipOpen();
       })
       .catch((err) => {
         console.error(err);
@@ -186,29 +208,16 @@ function App() {
           title: "Что-то пошло не так! Попробуйте ещё раз.",
           icon: error,
         });
-        handleInfoTooltipOpen();
-      });
+      })
+      .finally(() => handleInfoTooltipOpen());
   }
 
   function handleLogin(email, password) {
     authApi
       .authorize(email, password)
       .then((data) => {
-        authApi
-          .getContent(data.token)
-          .then((res) => {
-            setUserData(res.data.email);
-          })
-          .catch((err) => {
-            setDataInfoTool({
-              title: "Что-то пошло не так! Попробуйте ещё раз.",
-              icon: ok,
-            });
-            console.error(err);
-            handleInfoTooltipOpen();
-          });
-
         localStorage.setItem("token", data.token);
+        setUserData(email);
         setLoggedIn(true);
         history.push("/");
       })
@@ -228,6 +237,12 @@ function App() {
     localStorage.removeItem("token");
     history.push("/sign-in");
   }
+
+  const handleOverlay = (e) => {
+    if (e.target === e.currentTarget) {
+      closeAllPopups();
+    }
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -263,18 +278,21 @@ function App() {
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
           isLoading={isLoading}
+          popupClose={handleOverlay}
         />
         <PopupAddMesto
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
           isLoading={isLoading}
+          popupClose={handleOverlay}
         />
         <PopupEditAvatar
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
           isLoading={isLoading}
+          popupClose={handleOverlay}
         />
         <PopupDeleteCards
           card={cardDelete}
@@ -282,17 +300,20 @@ function App() {
           onClose={closeAllPopups}
           onCardDelete={handleCardDelete}
           isLoading={isLoading}
+          popupClose={handleOverlay}
         />
         <ImagePopup
           card={selectedCard}
           isOpen={selectedCard.isOpen}
           onClose={closeAllPopups}
+          popupClose={handleOverlay}
         />
         <InfoTooltip
           isOpen={isInfoTooltipOpen}
           onClose={closeAllPopups}
           title={dataInfoTool.title}
           icon={dataInfoTool.icon}
+          popupClose={handleOverlay}
         />
       </div>
     </CurrentUserContext.Provider>
