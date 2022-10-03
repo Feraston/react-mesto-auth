@@ -1,5 +1,5 @@
 import React from "react";
-import Close from "../images/close.svg";
+import close from "../images/close.svg";
  
 function PopupWithForm(props) {
   return (
@@ -15,7 +15,7 @@ function PopupWithForm(props) {
           type="button"
           onClick={props.onClose}
         >
-          <img src={Close} alt="Закрыть" className="popup__close" />
+          <img src={close} alt="Закрыть" className="popup__close" />
         </button>
         <form
           className={`popup__forms popup__${props.id}`}
